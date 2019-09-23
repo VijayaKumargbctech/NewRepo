@@ -1,0 +1,124 @@
+﻿@model IEnumerable<NSIC_OSM.UI.Models.RAL.PropertyRateCardDetailInfo>
+<input type="text" id="Isview" value="@ViewBag.Isview" hidden="hidden" />
+<div class="box-body">
+    <div class="box box-solid" style="background: #f4f4f4;">
+        <div class=" box-header" style="margin-bottom: 15px">
+            <h3 class="box-title">Furnishing Type </h3>
+        </div>
+        <div class="col-xs-12">
+            <div class="row">
+
+                <div class="col-md-2 col-xs-12 form-group">
+                    <label>Description</label>
+                </div>
+
+                <div class="col-md-2 col-xs-12 form-group">
+                    <label>Rate</label>
+                </div>
+
+                <div class="col-md-2 col-xs-12 form-group">
+                    <label>
+
+                    </label>
+                </div>
+
+                <div class="col-md-2 col-xs-12 form-group">
+                    <label>CGST Percentage</label>
+                </div>
+
+                <div class="col-md-2 col-xs-12 form-group">
+                    <label>SGST Percentage</label>
+                </div>
+
+                <div class="col-md-2 col-xs-12 form-group">
+                    <label>IGST Percentage</label>
+                </div>
+
+
+            </div>
+        </div>
+
+        @{int i = -1;}
+        @foreach (var item in Model)
+        {
+
+            <input type="hidden" value="@{ i++; }@i" />
+            @Html.HiddenFor(model => item.Id, new { Name = "PropertyRateCardDetailInfos[" + @i + "].Id", @id = "PropertyRateCardDetailInfos_" + i + "Id" })
+            @Html.HiddenFor(model => item.FurnishingTypeId, new { Name = "PropertyRateCardDetailInfos[" + @i + "].FurnishingTypeId", @id = "PropertyRateCardDetailInfos_" + i + "FurnishingTypeId" })
+            @Html.HiddenFor(model => item.RL_PropertyRateCardId, new { Name = "PropertyRateCardDetailInfos[" + @i + "].RL_PropertyRateCardId", @id = "PropertyRateCardDetailInfos_" + i + "RL_PropertyRateCardId" })
+
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-md-2 col-xs-12 form-group">
+                        <label>@item.Name</label>
+                    </div>
+                    <div class="col-md-2 col-xs-12 form-group">
+
+                        @Html.TextBoxFor(model => item.Rate, new { Name = "PropertyRateCardDetailInfos[" + @i + "].Rate", @id = "PropertyRateCardDetailInfos_" + i + "Rate", @maxlength = "10", @class = "form-control rate", @placeholder = "Enter Rate", @autocomplete = "off" })
+                    </div>
+
+                    <div class="col-md-2 col-xs-12 form-group">
+                        @if (item.Id > 0)
+                        {
+                            
+                            @Html.DropDownList("UOM", new SelectList(item.UOMList, "Value", "Text", item.UOM), "Please select UOM",new { Name = "PropertyRateCardDetailInfos[" + @i + "].UOM", @id = "PropertyRateCardDetailInfos" + i + "UOM", @class = "form-control Percentage" })
+                            @*@Html.DropDownListFor(model => item.UOM, item.UOMList, new { Name = "PropertyRateCardDetailInfos[" + @i + "].UOM", @id = "PropertyRateCardDetailInfos" + i + "UOM", @class = "form-control Percentage" })*@
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => item.UOM, item.UOMList, "Select UOM", new { Name = "PropertyRateCardDetailInfos[" + @i + "].UOM", @id = "PropertyRateCardDetailInfos" + i + "UOM", @class = "form-control Percentage" })
+                        }
+                    </div>
+
+                    <div class="col-md-2 col-xs-12 form-group">
+
+                        @Html.TextBoxFor(model => item.CGSTPer, new { Name = "PropertyRateCardDetailInfos[" + @i + "].CGSTPer", @id = "PropertyRateCardDetailInfos_" + i + "CGSTPer", @maxlength = "10", @class = "form-control Percentage", @placeholder = "Enter CGST Percentage", @autocomplete = "off" })
+                    </div>
+
+                    <div class="col-md-2 col-xs-12 form-group">
+                        @Html.TextBoxFor(model => item.SGSTPer, new { Name = "PropertyRateCardDetailInfos[" + @i + "].SGSTPer", @id = "PropertyRateCardDetailInfos_" + i + "SGSTPer", @maxlength = "10", @class = "form-control Percentage", @placeholder = "Enter SGST Percentage", @autocomplete = "off" })
+                    </div>
+
+                    <div class="col-md-2 col-xs-12 form-group">
+
+                        @Html.TextBoxFor(model => item.IGSTPer, new { Name = "PropertyRateCardDetailInfos[" + @i + "].IGSTPer", @id = "PropertyRateCardDetailInfos_" + i + "IGSTPer", @maxlength = "10", @class = "form-control Percentage", @placeholder = "Enter IGST Percentage", @autocomplete = "off" })
+                    </div>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+
+        if ($("#Isview").val()) {
+
+            $('.Percentage,.rate').attr("disabled", true);
+        }
+
+        $.validator.addClassRules('Percentage', {
+            required: true,
+            range: [0, 99]
+        });
+
+        $.validator.addClassRules('rate', {
+            required: true,
+
+        });
+
+        $(".Percentage,.rate ").keypress(function (e) {
+            //         var txt = $(".Percentage,.rate").val();
+            //       alert(txt);
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+            //               if (String.fromCharCode(e.keyCode).match(/[^0-9-.]/g)) return false;
+
+        });
+
+    });
+</script>
